@@ -1,7 +1,7 @@
 <?php
 
 if (!empty($_POST['id'])) {
-    require '../connection.php';
+    require '../config.php';
 
     $id = $_POST['id'];
 
@@ -9,8 +9,8 @@ if (!empty($_POST['id'])) {
     $res = $stmt->execute([$id]);
 
     if ($res) {
-        header("Location: ../index.php?message=success"); 
-    } else { 
+        header("Location: ../index.php?message=success");
+    } else {
         header("Location: ../index.php?message=error");
     }
 

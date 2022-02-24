@@ -1,6 +1,6 @@
 <?php
 
-if (isset($_POST['title']) && !empty($_POST['title'])) {
+if (!empty($_POST['title'])) {
     
     require '../connection.php';
 

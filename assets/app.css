@@ -1,0 +1,25 @@
+body {
+    background-color: #1F1F1F;
+}
+
+.card {
+    background-color: #292929;
+    color: #FAFAFA;
+}
+
+input {
+    background-color: #292929 !important;
+    color: #FAFAFA !important;
+    border: solid 2px #8257E5 !important;
+}
+
+input:focus {
+    outline: none !important;
+    box-shadow:none !important;
+}
+
+.btn-primary {
+    background-color: #8257E5 !important;
+    border: #8257E5 !important;
+    height: 40px !important;
+}

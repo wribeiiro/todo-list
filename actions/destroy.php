@@ -1,6 +1,6 @@
 <?php
 
-if (isset($_POST['id']) && !empty($_POST['id'])) {
+if (!empty($_POST['id'])) {
     require '../connection.php';
 
     $id = $_POST['id'];

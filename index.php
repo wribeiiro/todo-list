@@ -30,8 +30,8 @@
                     <div class="card-body">
                         <form action="./actions/store.php" method="POST" autocomplete="off">
                             <div class="d-flex justify-content-between">
-                                <input class="form-control mb-2 mr-2" type="text" name="title" placeholder="What do you need to do?"/>
-                                <button class="btn btn-primary" type="submit"><i class="fa fa-plus"></i> Add</button>
+                                <input class="form-control mb-2 mr-2" type="text" name="title" placeholder="What do you need to do?" id="inputTodoText"/>
+                                <button class="btn btn-primary" type="submit" id="btnAddTodo"><i class="fa fa-plus"></i> Add</button>
                             </div>
                         </form>
                     </div>
@@ -50,15 +50,22 @@
                                         <p <?= $todo['checked'] ? 'style="text-decoration: line-through"' : '' ?>>
                                             <input type="hidden" value="<?= $todo['id']; ?>" name="id">
                                             <input onChange="this.form.submit();" type="checkbox" data-todo-id="<?= $todo['id']; ?>" class="check-box" <?= $todo['checked'] ? 'checked' : '' ?> />
-                                            <span><?= $todo['title']; ?></span>
+                                            <span class="textTodo"><?= $todo['title']; ?></span>
                                         </p>
                                     </form>
-                                    <form action="./actions/destroy.php" method="POST">
-                                        <input type="hidden" value="<?= $todo['id']; ?>" name="id">
-                                        <button class="btn btn-danger destroy-todo" type="submit" data-todo-id="<?= $todo['id']; ?>">
-                                            <i class="fa fa-trash"></i>
+                                    
+                                    <div class="d-flex justify-content-between">
+                                        <button class="btn btn-info btnUpdateTodo mr-2" type="button" data-todo-id="<?= $todo['id']; ?>">
+                                            <i class="fa fa-edit"></i>
                                         </button>
-                                    </form>
+
+                                        <form action="./actions/destroy.php" method="POST">
+                                            <input type="hidden" value="<?= $todo['id']; ?>" name="id">
+                                            <button class="btn btn-danger destroy-todo mr-2" type="submit" data-todo-id="<?= $todo['id']; ?>">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                                 <small>Created: <?= date('d/m/Y H:i:s', strtotime($todo['created_at'])); ?></small>
                             </div>
@@ -72,5 +79,38 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <script>
+        const btnUpdateTodo = $('.btnUpdateTodo')
+
+        btnUpdateTodo.on('click', function () {
+            // get the previous element, this case is form, and find the span, and get the content
+            const todoToUpdate = $(this).parent('div').prev().find('span').text();
+            const todoId = $(this).attr('data-todo-id');
+            const newTodoText = prompt("Please enter todo", todoToUpdate);
+            
+            if (newTodoText) {
+                const xmlRequest = new XMLHttpRequest();
+                const formData = new FormData();
+
+                formData.append('title', newTodoText);
+                formData.append('updateTitle', 'true');
+                formData.append('id', todoId);
+
+                xmlRequest.addEventListener('load', function(event) {
+                    console.log('cé é o bichão memo!');
+                    window.location.reload();
+                });
+
+                xmlRequest.addEventListener('error', function(event) {
+                    alert('Deu ruim chama o amir!');
+                    window.location.reload();
+                });
+
+                xmlRequest.open('POST', './actions/update.php');
+                xmlRequest.send(formData);
+            }
+        });
+    </script>
 </body>
 </html>

@@ -9,10 +9,14 @@ if (!empty($_POST['id'])) {
 
     $todo = $todos->fetch();
     $todoId = $todo['id'];
-    $checked = $todo['checked'];
-    $isChecked = $checked ? 0 : 1;
+    $isChecked = $todo['checked'] ? 0 : 1;
 
-    $stmt = $conn->prepare("UPDATE todos SET checked=$isChecked WHERE id=?");
+    $updateParams = " SET checked = $isChecked ";
+    if (!empty($_POST['updateTitle'])) {
+        $updateParams = " SET title = '" . addslashes($_POST['title']) . "'";
+    }
+
+    $stmt = $conn->prepare("UPDATE todos {$updateParams} WHERE id=?");
     $res = $stmt->execute([$todoId]);
 
     if ($res) {
